@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>User Details</h2>
+  <table border="1">
+      <tr>
+          <th>FIELD</th>
+          <th>INFO</th>
+      </tr>
+    <tr><td>ID</td><td>{{ user.id }}</td></tr>
+      <tr><td>EMAIL</td><td>{{ user.email }}</td></tr>
+      <tr><td>NAME</td><td>{{ user.name }}</td></tr>
+      <tr><td>PHONE</td><td>{{ user.phone_number }}</td></tr>
+      <tr><td>META</td><td>{{ user.meta }}</td></tr>
+  </table>
+<p>[<a href="/user/all">View all users</a>]</p>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Social Login Project</title>
+</head>
+<body>
+<div>
+    <p>
+        [<a href="/">Home</a>]
+  {% if user.is_authenticated %}
+    <a href="/logout">[Logout]</a>
+  {% else %}
+    <a href="/login">[Login]</a>
+  {% endif %}
+        </p>
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+</body>
+</html>
