@@ -1,6 +1,3 @@
-import copy
-
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, DetailView
@@ -8,6 +5,14 @@ from django.dispatch import receiver
 from django.shortcuts import redirect
 from allauth.account.signals import user_signed_up
 from allauth.socialaccount.signals import pre_social_login
+
+from rest_framework import status
+from rest_framework.generics import UpdateAPIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from .serializers import ChangePasswordSerializer
+
 
 User = get_user_model()
 
@@ -24,12 +29,6 @@ class UserDetailView(DetailView):
 
 
 user_detail_view = login_required(UserDetailView.as_view())
-
-
-@login_required
-def user_set_password(request):
-    return render(request, 'users/user_set_password.html')
-    # return redirect('/accounts/password/set/')
 
 
 def update_user_info(user):
@@ -88,3 +87,31 @@ def login(request):
 
 def logout(request):
     return redirect('/accounts/logout')
+
+
+class ChangePasswordView(UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+            return Response(response)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

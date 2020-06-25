@@ -6,7 +6,7 @@ from .models import User
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {'fields': ('name', 'email', 'phone_number', 'last_login')}),
+        (None, {'fields': ('name', 'phone_number', 'meta', 'last_login')}),
         ('Permissions', {'fields': (
             'is_active',
             'is_staff',
@@ -20,7 +20,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 'classes': ('wide',),
-                'fields': ('meta', 'password1', 'password2')
+                'fields': ('name', 'email', 'phone_number', 'meta', 'password1', 'password2')
             }
         ),
     )
