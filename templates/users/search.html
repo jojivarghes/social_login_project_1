@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="/user/search/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Search">
+</form>
+<p>
+    {% if users %}
+    <table border="1">
+      <tr>
+          <th>ID</th>
+          <th>EMAIL</th>
+          <th>NAME</th>
+          <th>PHONE NUMBER</th>
+      </tr>
+      {% for user in users %}
+      <tr>
+        <td><a href="{{ user.get_absolute_url }}">{{ user.id }}</a></td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.phone_number }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+</p>
+{% endif %}
+<p>
+    {% if match_count != None %}
+    <span>Number os matches found: {{match_count}}</span>
+    {% endif %}
+</p>
+{% endblock %}

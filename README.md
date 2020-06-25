@@ -22,3 +22,4 @@ A demo social login project with Django
         python manage.py runserver
         
 1. Check http://127.0.0.1:8000/
+1. Replace "example.com" with "http://127.0.0.1:8000" in Django sites using admin portal at http://127.0.0.1:8000/admin

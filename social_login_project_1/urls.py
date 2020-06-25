@@ -19,9 +19,9 @@ from . import views as site_views
 from users import views as user_views
 
 urlpatterns = [
-    path(r'', site_views.home, name='home'),
-    path(r'login', user_views.login, name='user_login'),
-    path(r'logout', user_views.logout, name='user_logout'),
+    path('', site_views.home, name='home'),
+    path('login', user_views.login, name='user_login'),
+    path('logout', user_views.logout, name='user_logout'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('user/', include('users.urls')),

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, DetailView
 from django.dispatch import receiver
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from allauth.account.signals import user_signed_up
 from allauth.socialaccount.signals import pre_social_login
 
@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import ChangePasswordSerializer
-
+from .forms import SearchForm
 
 User = get_user_model()
 
@@ -55,9 +55,10 @@ def update_user_info(user):
         'linkedin': linkedin_extra_data,
         'twitter': twitter_extra_data,
     }
-    name_list = [github_name, linkedin_name, twitter_name]
-    name = next(s for s in name_list if s)
-    if name:
+    name_list = [user.name, github_name, linkedin_name, twitter_name]
+    name_available = any(name_list)
+    if name_available:
+        name = next(s for s in name_list if s)
         user.name = name
     user.meta = user_meta
     user.save()
@@ -115,3 +116,18 @@ class ChangePasswordView(UpdateAPIView):
             }
             return Response(response)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def search(request):
+    users = None
+    match_count = None
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            phone_number = form.data.get('phone_number')
+            users = User.objects.filter(phone_number__contains=phone_number)
+            match_count = len(users)
+    else:
+        form = SearchForm()
+
+    return render(request, 'users/search.html', {'form': form, 'users': users, 'match_count': match_count})
