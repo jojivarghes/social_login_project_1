@@ -133,6 +133,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIALACCOUNT_ADAPTER = 'users.adapter.PreSocialLoginAdapter'
+SOCIALACCOUNT_STORE_TOKENS = False  # workaround for django-allauth/issues/2467
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
