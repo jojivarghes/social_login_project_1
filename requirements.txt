@@ -1,4 +1,4 @@
-Django==3.0.7
+Django==3.1.12
 django-allauth==0.42.0
 psycopg2-binary==2.8.5
 python-decouple==3.3
